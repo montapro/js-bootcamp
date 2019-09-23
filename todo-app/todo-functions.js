@@ -14,6 +14,14 @@ const saveTodos = todos => {
   localStorage.setItem('todos', JSON.stringify(todos))
 }
 
+// Remove todo from list
+const removeTodo = id => {
+  const todoIndex = todos.findIndex(todo => todo.id === id)
+
+  // console.log(todoIndex)
+  todos.splice(todoIndex, 1)
+}
+
 // Render application todos based on filters
 const renderTodos = (todos, filters) => {
   const filteredTodos = todos.filter(todo => {
@@ -21,15 +29,17 @@ const renderTodos = (todos, filters) => {
       .toLowerCase()
       .includes(filters.searchText.toLowerCase())
     const hideCompletedMatch = !todo.completed || !filters.hideCompleted
-    
+
     return searchTextMatch && hideCompletedMatch
   })
 
   const incompleteTodos = filteredTodos.filter(todo => !todo.completed)
 
   document.querySelector('#todos').innerHTML = ''
-  document.querySelector('#todos').appendChild(generateSummaryDOM(incompleteTodos))
-  
+  document
+    .querySelector('#todos')
+    .appendChild(generateSummaryDOM(incompleteTodos))
+
   filteredTodos.forEach(todo => {
     generateTodoDOM(todo)
     document.querySelector('#todos').appendChild(generateTodoDOM(todo))
@@ -54,12 +64,17 @@ const generateTodoDOM = todo => {
   // Setup the remove button
   removeButton.textContent = 'x'
   todoEl.appendChild(removeButton)
-  
+  removeButton.addEventListener('click', () => {
+    removeTodo(todo.id)
+    saveTodos(todos)
+    renderTodos(todos, filters)
+  })
+
   return todoEl
 }
 
 // Get the DOM elements for list summary
-const generateSummaryDOM = (incompleteTodos) => {
+const generateSummaryDOM = incompleteTodos => {
   const summary = document.createElement('h2')
   summary.textContent = `You have ${incompleteTodos.length} todos left`
   return summary
