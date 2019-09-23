@@ -18,8 +18,12 @@ const saveTodos = todos => {
 const removeTodo = id => {
   const todoIndex = todos.findIndex(todo => todo.id === id)
 
-  // console.log(todoIndex)
   todos.splice(todoIndex, 1)
+}
+
+// Toggle todo as true or false
+const toggleTodo = todo => {
+  todo.completed = !todo.completed;
 }
 
 // Render application todos based on filters
@@ -41,7 +45,7 @@ const renderTodos = (todos, filters) => {
     .appendChild(generateSummaryDOM(incompleteTodos))
 
   filteredTodos.forEach(todo => {
-    generateTodoDOM(todo)
+    // generateTodoDOM(todo)
     document.querySelector('#todos').appendChild(generateTodoDOM(todo))
   })
 }
@@ -55,7 +59,13 @@ const generateTodoDOM = todo => {
 
   // Setup todo checkbox
   checkbox.setAttribute('type', 'checkbox')
+  checkbox.checked = todo.completed
   todoEl.appendChild(checkbox)
+  checkbox.addEventListener('change', () => {
+    toggleTodo(todo)
+    saveTodos(todos)
+    renderTodos(todos,filters)
+  })
 
   // Setup the todo text
   todoText.textContent = todo.text
