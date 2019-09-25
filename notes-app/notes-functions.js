@@ -25,10 +25,15 @@ const removeNote = id => {
   }
 }
 
+// Generate editUrl
+const editPageUrl = id => {
+  return `/edit.html#${id}`
+}
+
 // Generate the DOM structure for a note
 const generateNoteDOM = note => {
   const noteEl = document.createElement('div')
-  const textEl = document.createElement('span')
+  const textEl = document.createElement('a')
   const button = document.createElement('button')
 
   // Setup the remove note button
@@ -46,6 +51,7 @@ const generateNoteDOM = note => {
   } else {
     textEl.textContent = 'Unnamed note'
   }
+  textEl.setAttribute('href', editPageUrl(note.id))
   noteEl.appendChild(textEl)
 
   return noteEl
