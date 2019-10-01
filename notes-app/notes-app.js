@@ -32,3 +32,18 @@ window.addEventListener('storage', e => {
     renderNotes(notes, filters)
    }
 })
+
+// const now = moment()
+// now.subtract(1, 'week').subtract(20, 'days')
+// console.log(now.format('MMMM do, YYYY'))
+// console.log(now.fromNow())
+// const nowTimestamp = now.valueOf()
+
+// console.log(moment(now.nowTimestamp).toString())
+
+const birthday = moment().set({
+  'year': 1985,
+  'month': 1,
+  'date': 21,
+})
+console.log(birthday.format('MMM d, YYYY'))
