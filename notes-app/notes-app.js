@@ -2,16 +2,21 @@ let notes = getSavedNotes()
 
 const filters = {
   searchText: '',
+  sortBy: 'byEdited'
 }
 
 renderNotes(notes, filters)
 
 document.querySelector('#create-note').addEventListener('click', () => {
   const id = uuidv4()
+  const timestamp = moment().valueOf()
+  
   notes.push({
     id: id,
     title: '',
     body: '',
+    createdAt: timestamp,
+    updatedAt: timestamp
   })
   saveNotes(notes)
   location.assign(editPageUrl(id))
@@ -23,7 +28,8 @@ document.querySelector('#search-text').addEventListener('input', e => {
 })
 
 document.querySelector('#sort-by').addEventListener('change', e => {
-  console.log(e.target.value)
+  filters.sortBy = e.target.value
+  renderNotes(notes, filters)
 })
 
 window.addEventListener('storage', e => {
@@ -33,17 +39,3 @@ window.addEventListener('storage', e => {
    }
 })
 
-// const now = moment()
-// now.subtract(1, 'week').subtract(20, 'days')
-// console.log(now.format('MMMM do, YYYY'))
-// console.log(now.fromNow())
-// const nowTimestamp = now.valueOf()
-
-// console.log(moment(now.nowTimestamp).toString())
-
-const birthday = moment().set({
-  'year': 1985,
-  'month': 1,
-  'date': 21,
-})
-console.log(birthday.format('MMM d, YYYY'))
