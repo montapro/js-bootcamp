@@ -2,11 +2,7 @@
 const getSavedTodos = () => {
   const todosJSON = localStorage.getItem('todos')
 
-  if (todosJSON != null) {
-    return JSON.parse(todosJSON)
-  } else {
-    return []
-  }
+  return todosJSON ? JSON.parse(todosJSON) : []
 }
 
 // Save todos to localStorage
@@ -18,12 +14,18 @@ const saveTodos = todos => {
 const removeTodo = id => {
   const todoIndex = todos.findIndex(todo => todo.id === id)
 
-  todos.splice(todoIndex, 1)
+  if (todoIndex > -1) {
+    todos.splice(todoIndex, 1)
+  }
 }
 
 // Toggle todo as true or false
-const toggleTodo = todo => {
-  todo.completed = !todo.completed;
+const toggleTodo = id => {
+  const todo = todos.find(todo => todo.id === id)
+  
+  if (todo) {
+    todo.completed = !todo.completed;
+  }
 }
 
 // Render application todos based on filters
