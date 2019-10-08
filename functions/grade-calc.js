@@ -2,8 +2,12 @@
 // 15/20 -> You got a C (75%)!
 // A 90-100, B 80-89, C 70-79, D 60-69, F 0-59
 
-const gradeCalc = function(studentScore = 0, totalPossibleScore = 100) {
-  const percent = (studentScore * 100) / totalPossibleScore
+const gradeCalc = function(score, totalScore) {
+  if (typeof score !== 'number' || typeof totalScore !== 'number') {
+    throw Error('Please provide numbers only')
+  }
+
+  const percent = (score / totalScore) * 100
   let letterGrade = ''
 
   if (percent >= 90) {
@@ -18,8 +22,12 @@ const gradeCalc = function(studentScore = 0, totalPossibleScore = 100) {
     letterGrade = 'F'
   }
 
-  return `${studentScore}/${totalPossibleScore} -> You got a ${letterGrade} (${percent}%)!`
+  return `You got a ${letterGrade} (${percent}%)!`
 }
 
-const result = gradeCalc(30, 50)
-console.log(result)
+try {
+  const result = gradeCalc(9, true)
+  console.log(result)
+} catch (e) {
+  console.log(e.message)
+}
