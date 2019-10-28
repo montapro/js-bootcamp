@@ -13,14 +13,16 @@ window.addEventListener('keypress', e => {
   guessesEl.textContent = game1.statusMessage
 })
 
-getPuzzle('2').then((puzzle) => {
-  console.log(puzzle)
-}, (err) => {
-  console.log(`Error: ${err}`)
-})
+getPuzzle('2')
+  .then(puzzle => {
+    console.log(puzzle)
+  })
+  .catch(error => {
+    console.log(error)
+  })
 
-getCountry('MX').then((country) => {
+getCountry('MX').then(country => {
   console.log(country.name)
-}, (err) => {
-  console.log(`Error: ${err}`)
+}).catch(error => {
+  console.log(error)
 })
