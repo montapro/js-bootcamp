@@ -4,7 +4,7 @@ const getPuzzle = wordCount => {
       if (response.status === 200) {
         return response.json()
       } else {
-        throw new Error('Unable to fetch puzzle')
+        throw new Error("Unable to fetch puzzle")
       }
     })
     .then(data => {
@@ -13,11 +13,23 @@ const getPuzzle = wordCount => {
 }
 
 const getCountry = countryCode => {
-  return fetch('http://restcountries.eu/rest/v2/all').then(response => {
+  return fetch("http://restcountries.eu/rest/v2/all")
+    .then(response => {
+      if (response.status === 200) {
+        return response.json()
+      } else {
+        throw new Error("Unable to fetch data")
+      }
+    })
+    .then(data => data.find(country => country.alpha2Code === countryCode))
+}
+
+const getLocation = () => {
+  return fetch("http://ipinfo.io/json?token=aac18f2c0b00c4").then(response => {
     if (response.status === 200) {
       return response.json()
     } else {
-      throw new Error('Unable to fetch data')
+      throw new Error("Unable to fetch location data")
     }
-  }).then(data => data.find(country => country.alpha2Code === countryCode))
+  })
 }
