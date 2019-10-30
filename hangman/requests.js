@@ -9,24 +9,24 @@ const getPuzzle = async wordCount => {
   }
 }
 
-const getCountry = countryCode => {
-  return fetch("http://restcountries.eu/rest/v2/all")
-    .then(response => {
-      if (response.status === 200) {
-        return response.json()
-      } else {
-        throw new Error("Unable to fetch data")
-      }
-    })
-    .then(data => data.find(country => country.alpha2Code === countryCode))
+const getCountry = async countryCode => {
+  const response = await fetch('http://restcountries.eu/rest/v2/all')
+
+  if (response.status === 200) {
+    const data = await response.json()
+    return data.find(country => country.alpha2Code === countryCode)
+  } else {
+    throw new Error('Unable to fetch data')
+  }
 }
 
-const getLocation = () => {
-  return fetch("http://ipinfo.io/json?token=aac18f2c0b00c4").then(response => {
-    if (response.status === 200) {
-      return response.json()
-    } else {
-      throw new Error("Unable to fetch location data")
-    }
-  })
+const getLocation = async () => {
+  const response = await fetch('http://ipinfo.io/json?token=aac18f2c0b00c4')
+
+  if (response.status === 200) {
+    const data = await response.json()
+    return data
+  } else {
+    throw new Error("Unable to fetch location data")
+  }
 }
