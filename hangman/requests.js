@@ -9,6 +9,12 @@ const getPuzzle = async wordCount => {
   }
 }
 
+const getCurrentCountry = async () => {
+  const location = await getLocation()
+  const country = await getCountry(location.country)
+  return country
+}
+
 const getCountry = async countryCode => {
   const response = await fetch('http://restcountries.eu/rest/v2/all')
 
@@ -24,8 +30,7 @@ const getLocation = async () => {
   const response = await fetch('http://ipinfo.io/json?token=aac18f2c0b00c4')
 
   if (response.status === 200) {
-    const data = await response.json()
-    return data
+    return response.json()
   } else {
     throw new Error("Unable to fetch location data")
   }

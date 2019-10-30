@@ -21,19 +21,21 @@ getPuzzle("2")
     console.log(`Error: ${error}`)
   })
 
-// getCountry('MX').then(country => {
-//   console.log(country.name)
-// }).catch(error => {
-//   console.log(`Error: ${error}`)
-// })
-
-getLocation()
-  .then(location => {
-    return getCountry(location.country)
-  })
+getCurrentCountry()
   .then(country => {
     console.log(country.name)
   })
   .catch(error => {
     console.log(`Error: ${error}`)
   })
+
+// getLocation()
+//   .then(location => {
+//     return getCountry(location.country)
+//   })
+//   .then(country => {
+//     console.log(country.name)
+//   })
+//   .catch(error => {
+//     console.log(`Error: ${error}`)
+//   })
