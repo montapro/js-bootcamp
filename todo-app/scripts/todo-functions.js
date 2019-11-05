@@ -72,7 +72,7 @@ const generateTodoDOM = todo => {
   checkbox.addEventListener('change', () => {
     toggleTodo(todo)
     saveTodos(todos)
-    renderTodos(todos,filters)
+    renderTodos(todos, filters)
   })
 
   // Setup the todo text
