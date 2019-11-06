@@ -1,99 +1,113 @@
-'use strict'
+'use strict';
 
 // Fetch existing todos from localStorage
 const getSavedTodos = () => {
-  const todosJSON = localStorage.getItem('todos')
+  const todosJSON = localStorage.getItem('todos');
 
   try {
-    return todosJSON ? JSON.parse(todosJSON) : []
+    return todosJSON ? JSON.parse(todosJSON) : [];
   } catch (e) {
-    return []
+    return [];
   }
-}
+};
 
 // Save todos to localStorage
 const saveTodos = todos => {
-  localStorage.setItem('todos', JSON.stringify(todos))
-}
+  localStorage.setItem('todos', JSON.stringify(todos));
+};
 
 // Remove todo from list
 const removeTodo = id => {
-  const todoIndex = todos.findIndex(todo => todo.id === id)
+  const todoIndex = todos.findIndex(todo => todo.id === id);
 
   if (todoIndex > -1) {
-    todos.splice(todoIndex, 1)
+    todos.splice(todoIndex, 1);
   }
-}
+};
 
 // Toggle todo as true or false
 const toggleTodo = id => {
-  const todo = todos.find(todo => todo.id === id)
-  
+  const todo = todos.find(todo => todo.id === id);
+
   if (todo) {
     todo.completed = !todo.completed;
   }
-}
+};
 
 // Render application todos based on filters
 const renderTodos = (todos, filters) => {
+  const todoEl = document.querySelector('#todos');
   const filteredTodos = todos.filter(todo => {
     const searchTextMatch = todo.text
       .toLowerCase()
-      .includes(filters.searchText.toLowerCase())
-    const hideCompletedMatch = !todo.completed || !filters.hideCompleted
+      .includes(filters.searchText.toLowerCase());
+    const hideCompletedMatch = !todo.completed || !filters.hideCompleted;
 
-    return searchTextMatch && hideCompletedMatch
-  })
+    return searchTextMatch && hideCompletedMatch;
+  });
 
-  const incompleteTodos = filteredTodos.filter(todo => !todo.completed)
+  const incompleteTodos = filteredTodos.filter(todo => !todo.completed);
 
-  document.querySelector('#todos').innerHTML = ''
-  document
-    .querySelector('#todos')
-    .appendChild(generateSummaryDOM(incompleteTodos))
+  todoEl.innerHTML = '';
+  todoEl.appendChild(generateSummaryDOM(incompleteTodos));
 
-  filteredTodos.forEach(todo => {
-    // generateTodoDOM(todo)
-    document.querySelector('#todos').appendChild(generateTodoDOM(todo))
-  })
-}
+  if (todos.length > 0) {
+    filteredTodos.forEach(todo => {
+      todoEl.appendChild(generateTodoDOM(todo));
+    });
+  } else {
+    const emptyMessageEl = document.createElement('p');
+    emptyMessageEl.classList.add('empty-message');
+    emptyMessageEl.textContent = 'No to-dos to show';
+    todoEl.appendChild(emptyMessageEl);
+  }
+};
 
-// Get the dom elements for an individual note
+// Get the DOM elements for an individual note
 const generateTodoDOM = todo => {
-  const todoEl = document.createElement('div')
-  const checkbox = document.createElement('input')
-  const todoText = document.createElement('span')
-  const removeButton = document.createElement('button')
+  const todoEl = document.createElement('label');
+  const containerEl = document.createElement('div');
+  const checkbox = document.createElement('input');
+  const todoText = document.createElement('span');
+  const removeButton = document.createElement('button');
 
   // Setup todo checkbox
-  checkbox.setAttribute('type', 'checkbox')
-  checkbox.checked = todo.completed
-  todoEl.appendChild(checkbox)
+  checkbox.setAttribute('type', 'checkbox');
+  checkbox.checked = todo.completed;
+  containerEl.appendChild(checkbox);
   checkbox.addEventListener('change', () => {
-    toggleTodo(todo)
-    saveTodos(todos)
-    renderTodos(todos, filters)
-  })
+    toggleTodo(todo.id);
+    saveTodos(todos);
+    renderTodos(todos, filters);
+  });
 
   // Setup the todo text
-  todoText.textContent = todo.text
-  todoEl.appendChild(todoText)
+  todoText.textContent = todo.text;
+  containerEl.appendChild(todoText);
+
+  // Setup container
+  todoEl.classList.add('list-item');
+  containerEl.classList.add('list-item__container');
+  todoEl.appendChild(containerEl);
 
   // Setup the remove button
-  removeButton.textContent = 'x'
-  todoEl.appendChild(removeButton)
+  removeButton.textContent = 'remove';
+  removeButton.classList.add('button', 'button--text');
+  todoEl.appendChild(removeButton);
   removeButton.addEventListener('click', () => {
-    removeTodo(todo.id)
-    saveTodos(todos)
-    renderTodos(todos, filters)
-  })
+    removeTodo(todo.id);
+    saveTodos(todos);
+    renderTodos(todos, filters);
+  });
 
-  return todoEl
-}
+  return todoEl;
+};
 
 // Get the DOM elements for list summary
 const generateSummaryDOM = incompleteTodos => {
-  const summary = document.createElement('h2')
-  summary.textContent = `You have ${incompleteTodos.length} todos left`
-  return summary
-}
+  const summary = document.createElement('h2');
+  const plural = incompleteTodos.length === 1 ? '' : 's';
+  summary.classList.add('list-title');
+  summary.textContent = `You have ${incompleteTodos.length} todo${plural} left`;
+  return summary;
+};
