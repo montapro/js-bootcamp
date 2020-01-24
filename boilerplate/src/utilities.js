@@ -1,4 +1,10 @@
-console.log("utilites.js");
-// TODO: my test todo
-export const add = (a, b) => a + b;
-export const name = "Markus";
+// Named export
+// Default export
+
+const add = (a, b) => a + b;
+
+const name = 'Markus';
+
+const square = x => x * x;
+
+export { add, name, square as default };
