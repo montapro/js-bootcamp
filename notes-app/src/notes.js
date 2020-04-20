@@ -31,14 +31,17 @@ const createNote = () => {
     title: '',
     body: '',
     createdAt: timestamp,
-    updatedAt: timestamp
+    updatedAt: timestamp,
   });
+
   saveNotes();
+
+  return id;
 };
 
 // Remove a note from the list
-const removeNote = id => {
-  const noteIndex = notes.findIndex(note => note.id === id);
+const removeNote = (id) => {
+  const noteIndex = notes.findIndex((note) => note.id === id);
 
   if (noteIndex > -1) {
     notes.splice(noteIndex, 1);
@@ -47,7 +50,7 @@ const removeNote = id => {
 };
 
 // Sort your notes by one of three ways
-const sortNotes = sortBy => {
+const sortNotes = (sortBy) => {
   if (sortBy === 'byEdited') {
     return notes.sort((a, b) => {
       if (a.updatedAt > b.updatedAt) {
@@ -84,7 +87,7 @@ const sortNotes = sortBy => {
 };
 
 const updateNote = (id, updates) => {
-  const note = notes.find(note => note.id === id);
+  const note = notes.find((note) => note.id === id);
 
   if (!note) {
     return;
@@ -101,6 +104,7 @@ const updateNote = (id, updates) => {
   }
 
   saveNotes();
+  return note;
 };
 
 notes = loadNotes();
